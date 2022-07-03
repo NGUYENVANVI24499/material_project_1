@@ -6,11 +6,12 @@ import SearchIcon from '@material-ui/icons/Search';
 
 const useStyle = makeStyles(theme =>({
   root:{
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    transform:'translateZ(0)'
   },
   searchInput:{
     opacity: '0.6',
-    padding: '0px 8px',
+    padding: `0px ${theme.spacing(1)}`,
     fontSize: '0.8rem',
     '&:hover':{
       backgroundColor:'#f2f2f2'
