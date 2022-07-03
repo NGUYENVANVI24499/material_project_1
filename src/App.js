@@ -4,8 +4,8 @@ import {  CssBaseline,makeStyles} from '@material-ui/core'
 import SideMenu from './components/SideMenu'
 import Header from './components/Header';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import PageHead from './components/PageHead';
-import { PeopleOutlineTwoTone } from '@material-ui/icons';
+//import PageHead from './components/PageHead';
+//import { PeopleOutlineTwoTone } from '@material-ui/icons';
 import Employees from './pages/Employees/Employees';
 
 
@@ -49,11 +49,11 @@ function App() {
       <SideMenu></SideMenu>
       <div className={classes.appMain}>
         <Header />
-        <PageHead 
+        {/* <PageHead 
           title = "Page Header"
           subTitle = "Page description"
-          icon= {<PeopleOutlineTwoTone fontSize='large' />}
-        />
+          icon= {<PeopleOutlineTwoTone />}
+        /> */}
         <Employees />
       </div>
       <CssBaseline />
