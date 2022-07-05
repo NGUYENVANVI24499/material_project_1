@@ -54,8 +54,10 @@ const EmployeeForm = () => {
 
   const handleSubmit = e =>{
     e.preventDefault()
-    if(validate())
-      window.alert('tesa')
+    if(validate()){
+      employeeService.insertEmployee(values)
+      resetForm()
+    }
   }
   return (
     <Form onSubmit={handleSubmit}>
@@ -106,7 +108,7 @@ const EmployeeForm = () => {
             label = "Department"
             value = {values.departmentId}
             onChange = {handleInputChange}
-            options ={employeeService.getDepartmentCollection}
+            options ={employeeService.getDepartmentCollection()}
             error = {errors.departmentId}
           />
           <Controls.DatePicker
