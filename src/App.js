@@ -3,7 +3,8 @@ import {  } from '@material-ui/styles';
 import {  CssBaseline,makeStyles} from '@material-ui/core'
 import SideMenu from './components/SideMenu'
 import Header from './components/Header';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+// import { ThemeProvider, createTheme } from '@mui/material/styles' ;
+import {ThemeProvider, createTheme } from '@material-ui/core'
 //import PageHead from './components/PageHead';
 //import { PeopleOutlineTwoTone } from '@material-ui/icons';
 import Employees from './pages/Employees/Employees';
@@ -24,9 +25,7 @@ const theme = createTheme({
       default: "#f4f5fd"
     },
   },
-  shape:{
-    borderRadius:'12px'
-  },
+  
   overrides:{
     MuiAppBar:{
       root:{
