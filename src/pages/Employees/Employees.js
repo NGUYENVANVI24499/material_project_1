@@ -1,5 +1,5 @@
 import { InputAdornment, makeStyles, Paper, Toolbar } from '@material-ui/core'
-import { PeopleOutlineTwoTone } from '@material-ui/icons'
+import { EditOutlined, PeopleOutlineTwoTone } from '@material-ui/icons'
 import React, { useState } from 'react'
 import PageHead from '../../components/PageHead'
 import EmployeeForm from './EmployeeForm'
@@ -8,6 +8,9 @@ import {TableRow, TableCell, TableBody} from '@material-ui/core'
 import * as employeeService from "../../services/employeeService"
 import {Controls} from "../../components/controls/Controls"
 import {Search} from '@material-ui/icons'
+import AddIcon from '@material-ui/icons/Add';
+import Popup from '../../components/Popup'
+import CloseIcon from '@material-ui/icons/Close';
 const useStyle = makeStyles(theme=>({
   pageContent:{
     margin: theme.spacing(5),
@@ -15,6 +18,10 @@ const useStyle = makeStyles(theme=>({
   },
   searchInput:{
     width:'75%'
+  },
+  newButton:{
+    position:'absolute',
+    right:'10px'
   }
 }))
 
@@ -22,13 +29,17 @@ const  headCells = [
   {id:'fullName',lable:'Employee Name'},
   {id:'email', lable:'Email address'},
   {id: 'mobile',lable: 'Mobile Number'},
-  {id:'department', lable: 'Department',disableSorting:true}
+  {id:'department', lable: 'Department'},
+  {id:'actions', label:'Actions', disableSorting:true}
 ]
 
 const Employees = () => {
   const classes = useStyle()
+  const [recordForEdit, setRecordForEdit] = useState(null)
   const [records, setRecords] = useState(employeeService.getAllEmployees())
   const [filterFn, setFilterFn] = useState({fn:items => {return items}})
+  const[openPopup, setOpenPopup] = useState(false)
+
 
   const {TblContainer,TblHead,TblPagination,recordsAfterPaginAndSorting} = useTable(records, headCells,filterFn);
 
@@ -44,6 +55,22 @@ const Employees = () => {
     })
   }
 
+  const addOrEdit = (employee, resetForm)=>{
+    if(employee.id ==0)
+      employeeService.insertEmployee(employee)
+      else
+      employeeService.updateEmployee(employee)
+    resetForm()
+    setRecordForEdit(null)
+    setOpenPopup(false)
+    setRecords(employeeService.getAllEmployees())
+  }
+
+  const openInPopup = item =>{
+    setRecordForEdit(item)
+    setOpenPopup(true)
+
+  }
   return (
     <>
       <PageHead
@@ -52,7 +79,7 @@ const Employees = () => {
         icon = {<PeopleOutlineTwoTone />}
       />
       <Paper className={classes.pageContent}>
-        {/* <EmployeeForm /> */}
+        
         <Toolbar>
           <Controls.Input
             lable ="search Emloyees"
@@ -63,6 +90,13 @@ const Employees = () => {
               </InputAdornment>)
             }}
             onChange = {handleSearch}
+          />
+          <Controls.Button
+            className ={classes.newButton}
+            text = "Add New"
+            variant = "outlined"
+            startIcon ={<AddIcon />}
+            onClick = {()=>{setOpenPopup(true);setRecordForEdit(null)}}
           />
         </Toolbar>
 
@@ -77,6 +111,19 @@ const Employees = () => {
                   <TableCell>{item.email}</TableCell>
                   <TableCell>{item.mobile}</TableCell>
                   <TableCell>{item.department}</TableCell>
+                  <TableCell>
+                    <Controls.ActionButton
+                      color= "primary"
+                      onClick ={()=>{openInPopup(item)}}
+                      >
+                      <EditOutlined fontSize='small'></EditOutlined>
+                    </Controls.ActionButton>
+                    <Controls.ActionButton
+                      color= "secondary"
+                      >
+                      <CloseIcon fontSize='small'></CloseIcon>
+                    </Controls.ActionButton>
+                  </TableCell>
                 </TableRow>
               ))
             }
@@ -84,6 +131,16 @@ const Employees = () => {
         </TblContainer>
         <TblPagination />
       </Paper>
+      <Popup
+        title ="Emloyee From"
+        openPopup ={openPopup}
+        setOpenPopup = {setOpenPopup}
+      >
+        <EmployeeForm 
+          recordForEdit ={recordForEdit}
+          addOrEdit ={addOrEdit}
+        />
+      </Popup>
     </>
   )
 }
