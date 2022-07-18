@@ -11,6 +11,7 @@ import {Search} from '@material-ui/icons'
 import AddIcon from '@material-ui/icons/Add';
 import Popup from '../../components/Popup'
 import CloseIcon from '@material-ui/icons/Close';
+import Notification from '../../components/Notification'
 const useStyle = makeStyles(theme=>({
   pageContent:{
     margin: theme.spacing(5),
@@ -40,7 +41,7 @@ const Employees = () => {
   const [filterFn, setFilterFn] = useState({fn:items => {return items}})
   const[openPopup, setOpenPopup] = useState(false)
 
-
+  const [notify, setNotify] = useState({isOpent : false, message:'',type:''})
   const {TblContainer,TblHead,TblPagination,recordsAfterPaginAndSorting} = useTable(records, headCells,filterFn);
 
   const handleSearch = e =>{
@@ -64,12 +65,29 @@ const Employees = () => {
     setRecordForEdit(null)
     setOpenPopup(false)
     setRecords(employeeService.getAllEmployees())
+    setNotify({
+      isOpent:true,
+      message: 'Submitted successfully',
+      type:'success'
+    })
   }
 
   const openInPopup = item =>{
     setRecordForEdit(item)
     setOpenPopup(true)
 
+  }
+  const onDelete = id =>{
+    console.log(id)
+    if(window.confirm('Are you sure to delete this record')){
+      employeeService.deleteEmployee(id)
+      setRecords(employeeService.getAllEmployees())
+      setNotify({
+        isOpent:true,
+        message: 'deleted successfully',
+        type:'error'
+      })
+    }
   }
   return (
     <>
@@ -120,6 +138,10 @@ const Employees = () => {
                     </Controls.ActionButton>
                     <Controls.ActionButton
                       color= "secondary"
+                      onClick ={()=>{
+                          onDelete(item.id)
+                        
+                        }}
                       >
                       <CloseIcon fontSize='small'></CloseIcon>
                     </Controls.ActionButton>
@@ -141,6 +163,10 @@ const Employees = () => {
           addOrEdit ={addOrEdit}
         />
       </Popup>
+      <Notification 
+        notify = {notify}
+        setNotify = {setNotify}
+      />
     </>
   )
 }

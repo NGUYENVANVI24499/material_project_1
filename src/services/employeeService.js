@@ -12,7 +12,7 @@ export const getDepartmentCollection =()=>([
 
 export function insertEmployee(data){
     let employees = getAllEmployees()
-    data['id'] = generateEmployeeId
+    data['id'] = generateEmployeeId()
     employees.push(data)
     localStorage.setItem(KEYS.employees, JSON.stringify(employees))
 }
@@ -22,12 +22,17 @@ export function updateEmployee(data){
     employees[recordIndex] = {...data}
     localStorage.setItem(KEYS.employees, JSON.stringify(employees))
 }
+export function deleteEmployee(id) {
+    let employees = getAllEmployees();
+    employees = employees.filter(x => x.id != id)
+    localStorage.setItem(KEYS.employees, JSON.stringify(employees));
+}
 
 export function generateEmployeeId(){
     if(localStorage.getItem(KEYS.employeeId) == null)
         localStorage.setItem(KEYS.employeeId, '0')
     var id = parseInt(localStorage.getItem(KEYS.employeeId))
-    localStorage.setItem(KEYS.employeeId, (++id).toString)
+    localStorage.setItem(KEYS.employeeId, (++id).toString())
     return id;
 }
 

@@ -5,8 +5,8 @@ import SideMenu from './components/SideMenu'
 import Header from './components/Header';
 // import { ThemeProvider, createTheme } from '@mui/material/styles' ;
 import {ThemeProvider, createTheme } from '@material-ui/core'
-//import PageHead from './components/PageHead';
-//import { PeopleOutlineTwoTone } from '@material-ui/icons';
+import PageHead from './components/PageHead';
+import { PeopleOutlineTwoTone } from '@material-ui/icons';
 import Employees from './pages/Employees/Employees';
 
 
